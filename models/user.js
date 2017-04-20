@@ -15,6 +15,9 @@ var userSchema = mongoose.Schema({
   passwordResetToken: {type: String, default: ''},
   passwordResetExpires: {type: Date, default: Date.now}
 });
-
+//password will be added and encrypted before the data will be saved in db
+userSchema.methods.encryptPassword = (password) => {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
+}
 
 module.exports = mongoose.model('User', userSchema);

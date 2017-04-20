@@ -1,6 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const validator = require('express-validator');
 const ejs = require('ejs');
 const engine = require('ejs-mate');
 const session = require('express-session');
@@ -10,6 +11,7 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const app = express();
 
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/rateme');
 
 require('./config/passport');
@@ -22,6 +24,8 @@ app.set('view engine', 'ejs');
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+app.use(validator());
 
 app.use(session({
   secret: 'Thisismytestkey',

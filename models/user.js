@@ -9,7 +9,7 @@ var userSchema = mongoose.Schema({
   role: {type: String, default: ''},
   company: {
     name: {type: String, default: ''},
-    image: {type: String default: ''}
+    image: {type: String, default: ''}
   },
   //for password reset functionality
   passwordResetToken: {type: String, default: ''},
@@ -19,5 +19,9 @@ var userSchema = mongoose.Schema({
 userSchema.methods.encryptPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
 }
-
+//compare the user's password with encrypted password(this.password is the excrypted pass)
+userSchema.methods.validPassword = function(password) => {
+  //comparing new password with encrypted password
+  return bcrypt.compareSync(password, this.password);
+}
 module.exports = mongoose.model('User', userSchema);

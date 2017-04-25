@@ -1,6 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-
+const FacebookStrategy = require('passport-facebook').Strategy;
+const secret = require('../secret/secret');
 //in order to access the schema
 const User = require('../models/user');
 passport.serializeUser((user, done) => {
@@ -59,3 +60,31 @@ passport.use('local-login', new LocalStrategy({
     return done(null, user);
   });
 }));
+//creating the facebook middleware
+//secret.facebook is the facebook part in secret file
+//call back has req, token, refreshToken, profile and done
+passport.use(new FacebookStrategy(secret.facebook, (req, token, refreshToken,
+profile,done) => {
+  // now we want to check if the profile id of the user is already inside database, if yes login if not create a new user
+  User.findOne({facebook: profile.id}, (err, user) =>{
+    if(err){
+      return done(err)
+    }
+    if(user){
+      return done(null, user);
+    } else {
+      var newUser = new User();
+      //id is the one we have in user.js file
+      newUser.facebook = profile.id;
+      newUser.fullname = profile.displayName;
+      newUser.email = profile._json.email;
+      //token is an array as we said in
+      newUser.tokens.push({token: token});
+
+      newUser.save((err) => {
+        return done(null, newUser);
+      })
+    }
+  })
+}
+))

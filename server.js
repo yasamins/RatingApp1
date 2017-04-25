@@ -15,6 +15,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/rateme');
 
 require('./config/passport');
+require('./secret/secret');
 
 //enables us to make use of our static files
 app.use(express.static('public'));
@@ -41,7 +42,7 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 //access to the app variable in express method in line 10
-require('./routes/user')(app);
+require('./routes/user')(app, passport);
 
 app.listen(3000, function() {
   console.log('Listening on port 3000');

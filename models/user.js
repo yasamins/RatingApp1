@@ -13,14 +13,18 @@ var userSchema = mongoose.Schema({
   },
   //for password reset functionality
   passwordResetToken: {type: String, default: ''},
-  passwordResetExpires: {type: Date, default: Date.now}
+  passwordResetExpires: {type: Date, default: Date.now},
+  //facebook id
+  facebook: {type: String, default: ''},
+  //get the token of a particular user and save in db
+  tokens: Array
 });
 //password will be added and encrypted before the data will be saved in db
 userSchema.methods.encryptPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
 }
 //compare the user's password with encrypted password(this.password is the excrypted pass)
-userSchema.methods.validPassword = function(password) => {
+userSchema.methods.validPassword = function(password) {
   //comparing new password with encrypted password
   return bcrypt.compareSync(password, this.password);
 }

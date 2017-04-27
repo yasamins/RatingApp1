@@ -2,9 +2,36 @@ const formidable = require('formidable');
 const path = require('path');
 const fs = require('fs');
 
+const Company = require('../models/company');
+
+
 module.exports = (app) => {
+
   app.get('/company/create', (req,res) => {
-    res.render('./company/company', {title: 'Company Registration'});
+    var success = req.flash('success');
+    res.render('./company/company', {title: 'Company Registration', success:success, noErrors: success.length > 0});
+  });
+
+  app.post('/company/create', (req, res) => {
+      //new instance of the Company model
+    var newcompany = new Company();
+    newcompany.name = req.body.name;
+    newcompany.address = req.body.address;
+    newcompany.city = req.body.city;
+    newcompany.country = req.body.country;
+    newcompany.sector = req.body.sector;
+    newcompany.website = req.body.website;
+    newcompany.image = req.body.upload;
+
+
+    newcompany.save((err) => {
+      if(err){
+        console.log(err);
+      }
+      console.log(newcompany);
+      req.flash('success', 'Company data has been added.');
+      res.redirect('/home');
+    })
   });
 
   app.post('/upload', (req, res) => {

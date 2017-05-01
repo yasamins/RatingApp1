@@ -44,6 +44,7 @@ app.use(passport.session());
 //access to the app variable in express method in line 10
 require('./routes/user')(app, passport);
 require('./routes/company')(app);
+require('./routes/review')(app);
 
 app.listen(3000, function() {
   console.log('Listening on port 3000');

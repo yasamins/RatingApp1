@@ -8,6 +8,7 @@ const companySchema = mongoose.Schema({
   sector: {type: String},
   website: {type: String},
   image: {type: String},
+  //every employee of this particular company will be inside this array
   employees: [{
     employeeId: {type: String, default: ''},
     employeeFullname: {type: String, default: ''},

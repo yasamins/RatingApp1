@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
   var clickedValue = 0;
 
@@ -7,6 +8,8 @@ $(document).ready(function(){
     $('#3_star').attr('src', '/images/star-off.png');
     $('#4_star').attr('src', '/images/star-off.png');
     $('#5_star').attr('src', '/images/star-off.png');
+
+    $('#showTitle').html('Bad');
   });
 
   $('#1_star').on('click', function(){
@@ -20,6 +23,8 @@ $(document).ready(function(){
     $('#3_star').attr('src', '/images/star-off.png');
     $('#4_star').attr('src', '/images/star-off.png');
     $('#5_star').attr('src', '/images/star-off.png');
+
+    $('#showTitle').html('Poor');
   });
 
   $('#2_star').on('click', function(){
@@ -33,6 +38,8 @@ $(document).ready(function(){
     $('#3_star').attr('src', '/images/star-on.png');
     $('#4_star').attr('src', '/images/star-off.png');
     $('#5_star').attr('src', '/images/star-off.png');
+
+    $('#showTitle').html('Fair');
   });
 
   $('#3_star').on('click', function(){
@@ -46,6 +53,8 @@ $(document).ready(function(){
     $('#3_star').attr('src', '/images/star-on.png');
     $('#4_star').attr('src', '/images/star-on.png');
     $('#5_star').attr('src', '/images/star-off.png');
+
+    $('#showTitle').html('Good');
   });
 
   $('#4_star').on('click', function(){
@@ -59,6 +68,8 @@ $(document).ready(function(){
     $('#3_star').attr('src', '/images/star-on.png');
     $('#4_star').attr('src', '/images/star-on.png');
     $('#5_star').attr('src', '/images/star-on.png');
+
+    $('#showTitle').html('Excellent');
   });
 
   $('#5_star').on('click', function(){
@@ -79,10 +90,36 @@ $(document).ready(function(){
       $('#error').html('');
     }
     if(valid === true){
+      //console.log("Alive? " + id);
+      fetch('/review/'+id, { method: 'POST', body: {clickedValue: clickedValue,
+      review: review,
+      sender: sender}})
+        .then(function(res) {
+            return res.json();
+        }).then(function(json) {
+            console.log(json);
+            $('#review').val('');
+            $('#sender').val('');
+            $('#id').val('');
+        });
+
+      $.ajax({
+        url: '/review/'+ id,
+        type: 'POST',
+        data: {
+          clickedValue: clickedValue,
+          review: review,
+          sender: sender
+        },
+        success: function(){
+          $('#review').val('');
+          $('#sender').val('');
+          $('#id').val('');
+        }
+      });
 
     }else{
       return false;
     }
-    }
-  })
-});
+  });
+  });

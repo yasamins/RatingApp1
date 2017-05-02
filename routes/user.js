@@ -118,6 +118,14 @@ app.post('/forgot', (req,res, next) => {
   })
 
 });
+
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  req.session.destroy((err) => {
+    res.redirect('/');
+  });
+})
 }
 
 function validate(req, res, next) {

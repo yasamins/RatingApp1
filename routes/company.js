@@ -124,4 +124,7 @@ $push: {employees: {employeeId: req.user._id, employeeFullname: req.user.fullnam
   ]);
 });
 });
+app.get('/:name/employees', (req, res) => {
+  res.render('company/employees', {title: 'Company Employees', user: req.user});
+})
 }

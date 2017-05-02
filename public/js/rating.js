@@ -91,17 +91,6 @@ $(document).ready(function(){
     }
     if(valid === true){
       //console.log("Alive? " + id);
-      fetch('/review/'+id, { method: 'POST', body: {clickedValue: clickedValue,
-      review: review,
-      sender: sender}})
-        .then(function(res) {
-            return res.json();
-        }).then(function(json) {
-            console.log(json);
-            $('#review').val('');
-            $('#sender').val('');
-            $('#id').val('');
-        });
 
       $.ajax({
         url: '/review/'+ id,
